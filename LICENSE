@@ -1,21 +1,55 @@
-MIT License
+4D Studio License
+Version 1.0
 
-Copyright (c) 2026 4D Studio Contributors
+Copyright (c) 2026 4D Studio. All rights reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+TERMS AND CONDITIONS
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. GRANT OF USE
+   You are granted a free, non-exclusive, non-transferable license to use
+   4D Studio for personal, educational, and commercial work (using the tool
+   to create and animate your own 3D models and content).
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+2. CONTRIBUTIONS
+   You may submit contributions (pull requests, bug fixes, features) to the
+   official 4D Studio repository. By submitting a contribution, you grant
+   4D Studio irrevocable, worldwide, royalty-free rights to use, modify,
+   and incorporate your contribution into the project. You retain credit
+   for your contributions.
+
+3. RESTRICTIONS
+   You MAY NOT:
+   a) Redistribute, resell, sublicense, or share copies of 4D Studio,
+      modified or unmodified, as a standalone product or service
+   b) Create derivative works, forks, or competing products based on
+      this code
+   c) Remove, alter, or obscure the 4D Studio name, branding, or
+      license notices
+   d) Host 4D Studio as a service (SaaS) for third parties without
+      written permission from the copyright holder
+   e) Claim ownership of 4D Studio or any part of its codebase
+
+4. WHAT YOU CAN DO
+   You CAN:
+   a) Use 4D Studio freely for any personal or commercial work
+      (animating models, game dev, film, etc.)
+   b) View, study, and learn from the source code
+   c) Submit contributions to the official repository
+   d) Share links to the official repository or website
+   e) Use assets/animations you create WITH the tool — those are yours
+
+5. OWNERSHIP
+   4D Studio and all associated intellectual property remain the exclusive
+   property of the copyright holder. Contributions become part of 4D Studio
+   but contributors retain credit.
+
+6. NO WARRANTY
+   4D Studio is provided "as is" without warranty of any kind. The copyright
+   holder is not liable for any damages arising from its use.
+
+7. TERMINATION
+   This license is automatically terminated if you violate any of its terms.
+   Upon termination, you must cease all use and destroy any copies.
+
+For questions, licensing inquiries, or permission requests, contact:
+master.athras@gmail.com
