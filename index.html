@@ -83,16 +83,59 @@
   .ctx-item.danger{color:var(--red)}
   .ctx-sep{height:1px;background:var(--border);margin:3px 0}
   ::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:0}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-  #file-input,#json-input{display:none}
+  #file-input,#json-input,#proj-input{display:none}
+  /* Dropdown menus */
+  .menu-group{position:relative;display:flex;align-items:center;gap:0}
+  .menu-btn{padding:4px 10px;border:1px solid var(--border);border-radius:var(--r);background:0;color:var(--dim);font-family:'Outfit',sans-serif;font-size:11px;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:5px;white-space:nowrap}
+  .menu-btn:hover{background:var(--hover);color:var(--text)}
+  .menu-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+  .menu-btn .chevron{width:10px;height:10px;opacity:0.5;transition:transform .2s}
+  .menu-group:hover .chevron{transform:rotate(180deg)}
+  .menu-drop{position:absolute;top:100%;left:0;margin-top:4px;min-width:200px;background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:4px 0;display:none;box-shadow:0 8px 24px rgba(0,0,0,.5);z-index:200}
+  .menu-group:hover .menu-drop{display:block}
+  .menu-drop-item{padding:7px 14px;font-size:11px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .1s;color:var(--text)}
+  .menu-drop-item:hover{background:var(--hover)}
+  .menu-drop-item svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;opacity:0.6}
+  .menu-drop-item:hover svg{opacity:1}
+  .menu-drop-item .shortcut{margin-left:auto;font-size:9px;color:var(--dim);font-family:'JetBrains Mono',monospace}
+  .menu-drop-sep{height:1px;background:var(--border);margin:3px 0}
+  .menu-drop-label{padding:5px 14px;font-size:9px;font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--dim)}
+  /* Submenu (nested flyout) */
+  .menu-drop-item.has-sub{position:relative}
+  .menu-drop-item.has-sub::after{content:'';width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:4px solid var(--dim);margin-left:auto;flex-shrink:0}
+  .menu-drop-item.has-sub:hover::after{border-left-color:var(--text)}
+  .menu-sub{position:absolute;left:100%;top:-4px;min-width:160px;background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:4px 0;display:none;box-shadow:0 8px 24px rgba(0,0,0,.5);z-index:201}
+  .menu-drop-item.has-sub:hover .menu-sub{display:block}
+  .save-btn{padding:4px 10px;border:1px solid var(--accent);border-radius:var(--r);background:rgba(245,158,11,.08);color:var(--accent);font-family:'Outfit',sans-serif;font-size:11px;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:5px;white-space:nowrap;font-weight:600}
+  .save-btn:hover{background:rgba(245,158,11,.18)}
+  .save-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 </style>
 </head>
 <body>
 <div id="topbar">
   <span class="logo">4D Studio</span><div class="sep"></div>
-  <button class="tb" onclick="document.getElementById('file-input').click()">+ Import</button>
-  <button class="tb" onclick="document.getElementById('json-input').click()" style="color:var(--accent)">📂 Import JSON</button>
-  <button class="tb" onclick="exportGLB()">⬇ GLB</button>
-  <button class="tb" onclick="exportJSON()">⬇ JSON</button>
+  <!-- File dropdown -->
+  <div class="menu-group">
+    <button class="menu-btn"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>File<svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="menu-drop">
+      <div class="menu-drop-label">Import</div>
+      <div class="menu-drop-item" onclick="document.getElementById('file-input').click()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Import Model<span class="shortcut">.glb .gltf .fbx .obj</span></div>
+      <div class="menu-drop-item" onclick="document.getElementById('json-input').click()"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Import Animation JSON<span class="shortcut">.json</span></div>
+      <div class="menu-drop-sep"></div>
+      <div class="menu-drop-label">Export</div>
+      <div class="menu-drop-item has-sub"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export Model
+        <div class="menu-sub">
+          <div class="menu-drop-item" onclick="exportModel('glb')"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>GLB<span class="shortcut">binary</span></div>
+          <div class="menu-drop-item" onclick="exportModel('gltf')"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>GLTF<span class="shortcut">json</span></div>
+          <div class="menu-drop-item" onclick="exportModel('obj')"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>OBJ<span class="shortcut">wavefront</span></div>
+          <div class="menu-drop-item" onclick="exportModel('stl')"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>STL<span class="shortcut">3d print</span></div>
+        </div>
+      </div>
+      <div class="menu-drop-item" onclick="exportJSON()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export Animation JSON<span class="shortcut">.json</span></div>
+    </div>
+  </div>
+  <!-- Save project button -->
+  <button class="save-btn" onclick="saveProject()"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Save</button>
   <div class="sep"></div>
   <button class="tb" onclick="doUndo()" id="btn-undo" disabled>↩ Undo</button>
   <button class="tb" onclick="doRedo()" id="btn-redo" disabled>↪ Redo</button>
@@ -110,7 +153,7 @@
   <div id="left">
     <div class="ph">Scene</div>
     <div id="tree"></div>
-    <div id="drop-hint">Drop .glb files here</div>
+    <div id="drop-hint">Drop .glb .fbx .obj files here</div>
   </div>
   <div id="vp" style="position:relative">
     <div id="left-toggle" class="panel-toggle" onclick="togglePanel('left')">◀</div>
@@ -182,8 +225,9 @@
   <div class="ctx-sep"></div>
   <div class="ctx-item danger" id="ctx-del" onclick="ctxDelete()">🗑 Delete</div>
 </div>
-<input type="file" id="file-input" accept=".glb,.gltf" multiple onchange="handleFiles(event)">
+<input type="file" id="file-input" accept=".glb,.gltf,.fbx,.obj" multiple onchange="handleFiles(event)">
 <input type="file" id="json-input" accept=".json" onchange="handleJSONImport(event)">
+<input type="file" id="proj-input" accept=".4ds" onchange="handleProjectLoad(event)">
 
 <script type="importmap">
 {"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
@@ -192,6 +236,10 @@
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {GLTFExporter} from 'three/addons/exporters/GLTFExporter.js';
+import {OBJExporter} from 'three/addons/exporters/OBJExporter.js';
+import {STLExporter} from 'three/addons/exporters/STLExporter.js';
+import {FBXLoader} from 'three/addons/loaders/FBXLoader.js';
+import {OBJLoader} from 'three/addons/loaders/OBJLoader.js';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {TransformControls} from 'three/addons/controls/TransformControls.js';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
@@ -267,7 +315,7 @@ gp.rotation.x=-Math.PI/2;gp.receiveShadow=true;scene.add(gp);
 
 // State
 const models=[];let selected=null;let showBones=true;let highlightOn=true;let chainMode=false;
-const loader=new GLTFLoader();const rc=new THREE.Raycaster();const mouse=new THREE.Vector2();
+const loader=new GLTFLoader();const fbxLoader=new FBXLoader();const objLoader=new OBJLoader();const rc=new THREE.Raycaster();const mouse=new THREE.Vector2();
 const collapsedSections=new Set();const undoStack=[];const redoStack=[];const MAX_UNDO=50;
 let tlDuration=2,tlCurrentTime=0,tlPlaying=false,tlFPS=30,tlKeyframes={},tlDraggingKey=null,tlMouseDown=false;
 const tlCanvas=document.getElementById('tl-canvas');const tlCtx=tlCanvas.getContext('2d');
@@ -509,52 +557,69 @@ function updateUB(){document.getElementById('btn-undo').disabled=!undoStack.leng
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.style.opacity='1';setTimeout(()=>t.style.opacity='0',1200)}
 
 // Load
+function addModelToScene(obj, fileName, animations){
+  let name=fileName.replace(/\.(glb|gltf|fbx|obj)$/i,'');
+  let c=1;while(models.find(m=>m.name===name))name=name.replace(/_\d+$/,'')+'_'+c++;
+  obj.name=name;
+  obj.traverse(ch=>{if(ch.isMesh){ch.castShadow=true;ch.receiveShadow=true;
+    ch.frustumCulled=false;
+    (Array.isArray(ch.material)?ch.material:[ch.material]).forEach(mt=>{
+      mt.side=THREE.DoubleSide;
+      mt.depthWrite=true;
+      mt.depthTest=true;
+      if(!mt.alphaMap&&!mt.transparent){
+        mt.transparent=false;
+        mt.alphaTest=0;
+      }
+      const maxAniso=renderer.capabilities.getMaxAnisotropy();
+      const fixTex=(tex)=>{
+        if(!tex)return;
+        tex.anisotropy=maxAniso;
+        tex.generateMipmaps=true;
+        tex.minFilter=THREE.LinearMipmapLinearFilter;
+        tex.magFilter=THREE.LinearFilter;
+      };
+      if(mt.map){mt.map.colorSpace=THREE.SRGBColorSpace;fixTex(mt.map)}
+      if(mt.emissiveMap){mt.emissiveMap.colorSpace=THREE.SRGBColorSpace;fixTex(mt.emissiveMap)}
+      if(mt.normalMap)fixTex(mt.normalMap);
+      if(mt.roughnessMap)fixTex(mt.roughnessMap);
+      if(mt.metalnessMap)fixTex(mt.metalnessMap);
+      if(mt.aoMap)fixTex(mt.aoMap);
+      mt.needsUpdate=true;
+    });
+  }});
+  const bones=[];obj.traverse(ch=>{if(ch.isBone){bones.push(ch);ch.userData._oP=ch.position.clone();ch.userData._oR=ch.rotation.clone();ch.userData._oS=ch.scale.clone()}});
+  let sh=null;if(bones.length>0){sh=new THREE.SkeletonHelper(obj);sh.visible=showBones;sh.traverse(c=>c.layers.set(1));scene.add(sh)}
+  let mx=animations&&animations.length>0?new THREE.AnimationMixer(obj):null;
+  models.push({name,obj,bones,skelHelper:sh,animations:animations||[],mixer:mx,file:fileName});
+  scene.add(obj);rebuildBoneH();buildTree();updateStatus();select(obj);focusSel();toast('Loaded: '+name);
+}
+
 function loadFile(file){
-  const r=new FileReader();
-  r.onload=e=>{loader.parse(e.target.result,'',gltf=>{
-    const obj=gltf.scene;let name=file.name.replace(/\.(glb|gltf)$/i,'');
-    let c=1;while(models.find(m=>m.name===name))name=name.replace(/_\d+$/,'')+'_'+c++;
-    obj.name=name;
-    obj.traverse(ch=>{if(ch.isMesh){ch.castShadow=true;ch.receiveShadow=true;
-      // Fix frustum culling for large/complex meshes
-      ch.frustumCulled=false;
-      
-      (Array.isArray(ch.material)?ch.material:[ch.material]).forEach(mt=>{
-        // Fix see-through faces - render both sides
-        mt.side=THREE.DoubleSide;
-        
-        // Fix disappearing faces - ensure proper depth and alpha
-        mt.depthWrite=true;
-        mt.depthTest=true;
-        if(!mt.alphaMap&&!mt.transparent){
-          mt.transparent=false;
-          mt.alphaTest=0;
-        }
-        
-        // Fix all texture maps
-        const maxAniso=renderer.capabilities.getMaxAnisotropy();
-        const fixTex=(tex)=>{
-          if(!tex)return;
-          tex.anisotropy=maxAniso;
-          tex.generateMipmaps=true;
-          tex.minFilter=THREE.LinearMipmapLinearFilter;
-          tex.magFilter=THREE.LinearFilter;
-        };
-        if(mt.map){mt.map.colorSpace=THREE.SRGBColorSpace;fixTex(mt.map)}
-        if(mt.emissiveMap){mt.emissiveMap.colorSpace=THREE.SRGBColorSpace;fixTex(mt.emissiveMap)}
-        if(mt.normalMap)fixTex(mt.normalMap);
-        if(mt.roughnessMap)fixTex(mt.roughnessMap);
-        if(mt.metalnessMap)fixTex(mt.metalnessMap);
-        if(mt.aoMap)fixTex(mt.aoMap);
-        mt.needsUpdate=true;
-      });
-    }});
-    const bones=[];obj.traverse(ch=>{if(ch.isBone){bones.push(ch);ch.userData._oP=ch.position.clone();ch.userData._oR=ch.rotation.clone();ch.userData._oS=ch.scale.clone()}});
-    let sh=null;if(bones.length>0){sh=new THREE.SkeletonHelper(obj);sh.visible=showBones;sh.traverse(c=>c.layers.set(1));scene.add(sh)}
-    let mx=gltf.animations.length>0?new THREE.AnimationMixer(obj):null;
-    models.push({name,obj,bones,skelHelper:sh,animations:gltf.animations,mixer:mx,file:file.name});
-    scene.add(obj);rebuildBoneH();buildTree();updateStatus();select(obj);focusSel();toast('Loaded: '+name);
-  })};r.readAsArrayBuffer(file);
+  const ext=file.name.split('.').pop().toLowerCase();
+  if(ext==='fbx'){
+    const r=new FileReader();
+    r.onload=e=>{
+      try{
+        const obj=fbxLoader.parse(e.target.result,'');
+        addModelToScene(obj,file.name,obj.animations||[]);
+      }catch(err){console.error('FBX load error:',err);toast('Error loading FBX')}
+    };r.readAsArrayBuffer(file);
+  } else if(ext==='obj'){
+    const r=new FileReader();
+    r.onload=e=>{
+      try{
+        const obj=objLoader.parse(e.target.result);
+        addModelToScene(obj,file.name,[]);
+      }catch(err){console.error('OBJ load error:',err);toast('Error loading OBJ')}
+    };r.readAsText(file);
+  } else {
+    // GLB/GLTF
+    const r=new FileReader();
+    r.onload=e=>{loader.parse(e.target.result,'',gltf=>{
+      addModelToScene(gltf.scene,file.name,gltf.animations);
+    })};r.readAsArrayBuffer(file);
+  }
 }
 window.handleFiles=function(e){for(const f of e.target.files)loadFile(f);e.target.value=''};
 
@@ -584,6 +649,7 @@ document.addEventListener('keydown',e=>{
   if(e.key==='z'&&(e.ctrlKey||e.metaKey)&&e.shiftKey){e.preventDefault();doRedo();return}
   if(e.key==='z'&&(e.ctrlKey||e.metaKey)){e.preventDefault();doUndo();return}
   if(e.key==='w'||e.key==='g')setMode('translate');if(e.key==='r')setMode('rotate');
+  if(e.key==='s'&&(e.ctrlKey||e.metaKey)){e.preventDefault();saveProject();return}
   if(e.key==='s'&&!e.ctrlKey)setMode('scale');if(e.key==='Delete'||e.key==='Backspace')delSel();
   if(e.key==='Escape'){deselect();hideCtx()}if(e.key==='f')focusSel();
   if(e.key===' '){e.preventDefault();tlPlayPause()}if(e.key==='k')tlAddKey();
@@ -1122,8 +1188,136 @@ function updateSavedList(){const c=document.getElementById('saved-anims');if(!sa
 window.loadSA=function(i){const a=savedAnimations[i];if(!a)return;tlKeyframes={};tlDuration=a.duration;document.getElementById('tl-dur').value=tlDuration;Object.keys(a.keyframes).forEach(bn=>{let t=null;scene.traverse(o=>{if(o.name===bn)t=o});if(!t)return;tlKeyframes[t.uuid]=a.keyframes[bn].map(k=>({time:k.time,pos:{...k.pos},rot:{...k.rot},scl:{...k.scl},name:bn}))});drawTL();toast('Loaded: '+a.name)};
 
 // Export
-window.exportGLB=function(){if(!models.length)return;const exp=new GLTFExporter();const g=new THREE.Group();g.name='export';models.forEach(m=>g.add(m.obj.clone(true)));exp.parse(g,r=>{const b=new Blob([r],{type:'application/octet-stream'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='studio_export.glb';a.click();toast('Exported GLB')},e=>console.error(e),{binary:true})};
+window.exportGLB=function(){exportModel('glb')};
+window.exportModel=function(fmt){
+  if(!models.length){toast('No models to export');return}
+  const g=new THREE.Group();g.name='export';models.forEach(m=>g.add(m.obj.clone(true)));
+  
+  if(fmt==='glb'){
+    const exp=new GLTFExporter();
+    exp.parse(g,r=>{
+      const b=new Blob([r],{type:'application/octet-stream'});
+      const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='studio_export.glb';a.click();
+      toast('Exported GLB');
+    },e=>console.error(e),{binary:true});
+  } else if(fmt==='gltf'){
+    const exp=new GLTFExporter();
+    exp.parse(g,r=>{
+      const b=new Blob([JSON.stringify(r,null,2)],{type:'application/json'});
+      const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='studio_export.gltf';a.click();
+      toast('Exported GLTF');
+    },e=>console.error(e),{binary:false});
+  } else if(fmt==='obj'){
+    const exp=new OBJExporter();
+    const result=exp.parse(g);
+    const b=new Blob([result],{type:'text/plain'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='studio_export.obj';a.click();
+    toast('Exported OBJ');
+  } else if(fmt==='stl'){
+    const exp=new STLExporter();
+    const result=exp.parse(g,{binary:true});
+    const b=new Blob([result],{type:'application/octet-stream'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='studio_export.stl';a.click();
+    toast('Exported STL');
+  }
+};
 window.exportJSON=function(){const data={models:{},savedAnimations:savedAnimations};models.forEach(m=>{data.models[m.name]={file:m.file,position:{x:rd(m.obj.position.x),y:rd(m.obj.position.y),z:rd(m.obj.position.z)},rotation:{x:rd(THREE.MathUtils.radToDeg(m.obj.rotation.x)),y:rd(THREE.MathUtils.radToDeg(m.obj.rotation.y)),z:rd(THREE.MathUtils.radToDeg(m.obj.rotation.z))},scale:{x:rd(m.obj.scale.x),y:rd(m.obj.scale.y),z:rd(m.obj.scale.z)}}});const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='studio_data.json';a.click();toast('Exported JSON')};
+
+// Save project (.4ds) - saves current progress without overwriting the model
+window.saveProject=function(){
+  const proj={
+    version:'0.5',
+    timestamp:Date.now(),
+    savedAnimations:savedAnimations,
+    timeline:{duration:tlDuration,currentTime:tlCurrentTime},
+    keyframes:{},
+    modelTransforms:{}
+  };
+  // Save current timeline keyframes by bone name
+  Object.keys(tlKeyframes).forEach(uuid=>{
+    const keys=tlKeyframes[uuid];if(!keys.length)return;
+    const boneName=keys[0].name||uuid;
+    proj.keyframes[boneName]=keys.map(k=>({time:k.time,pos:{...k.pos},rot:{...k.rot},scl:{...k.scl}}));
+  });
+  // Save model transforms
+  models.forEach(m=>{
+    proj.modelTransforms[m.name]={
+      file:m.file,
+      position:{x:rd(m.obj.position.x),y:rd(m.obj.position.y),z:rd(m.obj.position.z)},
+      rotation:{x:rd(m.obj.rotation.x),y:rd(m.obj.rotation.y),z:rd(m.obj.rotation.z)},
+      scale:{x:rd(m.obj.scale.x),y:rd(m.obj.scale.y),z:rd(m.obj.scale.z)},
+      boneTransforms:{}
+    };
+    m.bones.forEach(b=>{
+      proj.modelTransforms[m.name].boneTransforms[b.name]={
+        pos:{x:rd(b.position.x),y:rd(b.position.y),z:rd(b.position.z)},
+        rot:{x:rd(b.rotation.x),y:rd(b.rotation.y),z:rd(b.rotation.z)},
+        scl:{x:rd(b.scale.x),y:rd(b.scale.y),z:rd(b.scale.z)}
+      };
+    });
+  });
+  const b=new Blob([JSON.stringify(proj,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);
+  const name=models.length>0?models[0].name:'project';
+  a.download=name+'_project.4ds';a.click();
+  toast('Project saved as .4ds');
+};
+
+// Load project (.4ds)
+window.handleProjectLoad=function(event){
+  const file=event.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const proj=JSON.parse(e.target.result);
+      // Restore saved animations
+      if(proj.savedAnimations){
+        proj.savedAnimations.forEach(a=>savedAnimations.push(a));
+        updateSavedList();
+      }
+      // Restore timeline
+      if(proj.timeline){
+        tlDuration=proj.timeline.duration||2;
+        document.getElementById('tl-dur').value=tlDuration;
+      }
+      // Restore keyframes
+      if(proj.keyframes){
+        Object.keys(proj.keyframes).forEach(boneName=>{
+          let bone=null;scene.traverse(o=>{if(o.name===boneName)bone=o});
+          if(!bone)return;
+          tlKeyframes[bone.uuid]=proj.keyframes[boneName].map(k=>({
+            time:k.time,pos:{...k.pos},rot:{...k.rot},scl:{...k.scl},name:boneName
+          }));
+        });
+        drawTL();
+      }
+      // Restore model/bone transforms
+      if(proj.modelTransforms){
+        Object.keys(proj.modelTransforms).forEach(mName=>{
+          const mt=proj.modelTransforms[mName];
+          const model=models.find(m=>m.name===mName);
+          if(!model)return;
+          if(mt.position)model.obj.position.set(mt.position.x,mt.position.y,mt.position.z);
+          if(mt.rotation)model.obj.rotation.set(mt.rotation.x,mt.rotation.y,mt.rotation.z);
+          if(mt.scale)model.obj.scale.set(mt.scale.x,mt.scale.y,mt.scale.z);
+          if(mt.boneTransforms){
+            Object.keys(mt.boneTransforms).forEach(bName=>{
+              const bt=mt.boneTransforms[bName];
+              const bone=model.bones.find(b=>b.name===bName);
+              if(!bone)return;
+              bone.position.set(bt.pos.x,bt.pos.y,bt.pos.z);
+              bone.rotation.set(bt.rot.x,bt.rot.y,bt.rot.z);
+              bone.scale.set(bt.scl.x,bt.scl.y,bt.scl.z);
+            });
+          }
+        });
+      }
+      toast('Project loaded — '+file.name);
+    }catch(err){console.error('Project load error:',err);toast('Error loading project')}
+  };
+  reader.readAsText(file);
+  event.target.value='';
+};
 
 // Import JSON - loads saved animations as real clips onto models
 window.handleJSONImport=function(event){
@@ -1209,7 +1403,7 @@ window.handleJSONImport=function(event){
 // Drag drop
 ['dragenter','dragover'].forEach(e=>document.addEventListener(e,ev=>{ev.preventDefault();document.getElementById('drop-ov').style.display='flex'}));
 ['dragleave','drop'].forEach(e=>document.addEventListener(e,ev=>{ev.preventDefault();document.getElementById('drop-ov').style.display='none'}));
-document.addEventListener('drop',e=>{e.preventDefault();for(const f of e.dataTransfer.files)if(f.name.match(/\.(glb|gltf)$/i))loadFile(f)});
+document.addEventListener('drop',e=>{e.preventDefault();for(const f of e.dataTransfer.files){if(f.name.match(/\.(glb|gltf|fbx|obj)$/i))loadFile(f);else if(f.name.match(/\.4ds$/i)){const ev={target:{files:[f],value:'x'}};handleProjectLoad(ev)}}});
 
 // Render
 const clock=new THREE.Clock();
