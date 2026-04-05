@@ -6,7 +6,7 @@ Built with [Three.js](https://threejs.org/).
 
 ## Features
 
-**Scene Management** — Import GLB/GLTF models via drag & drop. Import AI-generated animation JSON. Export as GLB or JSON. Multi-model support.
+**Scene Management** — Import GLB/GLTF/OBJ/STL models via drag & drop. Export as GLB/GLTF/OBJ/STL. You can also import animation JSON. 
 
 **Posing & Animation** — Click bones in viewport or tree. Transform gizmo (Move/Rotate/Scale). Full keyframe timeline with draggable diamonds. Load existing clips for editing. Save new animations as clips. Channel locking to protect finished work.
 
@@ -18,7 +18,7 @@ Built with [Three.js](https://threejs.org/).
 
 1. Download `index.html`
 2. Open it in Chrome, Firefox, or Edge
-3. Drag a `.glb` file onto the viewport
+3. Drag or import file onto the viewport
 4. Click bones, press W/R/S to transform, K to keyframe, Space to play
 
 No build step. No npm. No server. Just open the file.
@@ -39,9 +39,10 @@ No build step. No npm. No server. Just open the file.
 | Ctrl+Z | Undo |
 | Ctrl+Shift+Z | Redo |
 
-## AI Animation (WIP)
+## Fast Animation (WIP)
 
-Export bone data → describe the animation you want → AI generates keyframe JSON → import it as a playable clip. Work in progress.
+Export JSON data → Edit what you want → Import it as a playable clip. 
+(AI Animation Suppor Work in progress.)
 
 ## Why?
 
@@ -49,10 +50,10 @@ Blender is a 2GB download with millions of lines of code. Most devs use 5% of it
 
 ## Roadmap
 
-- [ ] Improved AI animation generation
 - [ ] Rigging tool (add bones to unrigged models)
-- [ ] Mesh splitting (jaw animation, etc.)
+- [ ] Mesh splitting (add talk animation to non moving mouths., etc.)
 - [ ] Curve editor (ease in/out)
+- [ ] AI animation helper
 - [ ] Onion skinning
 - [ ] Cloud sync & collaboration
 - [ ] Animation marketplace
