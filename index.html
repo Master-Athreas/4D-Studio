@@ -734,8 +734,10 @@ function showCtx(e,target){
   ctxMenu.style.left=e.clientX+'px';ctxMenu.style.top=e.clientY+'px';ctxMenu.style.display='block';
   // Show/hide relevant items
   document.getElementById('ctx-dup').style.display=target.type==='model'?'flex':'none';
-  document.getElementById('ctx-del').style.display=(target.type==='model'||target.type==='anim')?'flex':'none';
+  document.getElementById('ctx-del').style.display=(target.type==='model'||target.type==='anim'||target.type==='clip'||target.type==='clipHeader')?'flex':'none';
+  document.getElementById('ctx-del').textContent=target.type==='clipHeader'?'🗑 Delete All Clips':'🗑 Delete';
   document.getElementById('ctx-focus').style.display=(target.type==='model'||target.type==='bone')?'flex':'none';
+  document.getElementById('ctx-rename').style.display=(target.type==='clip'||target.type==='clipHeader')?'none':'flex';
 }
 
 window.ctxRename=function(){
@@ -768,6 +770,23 @@ window.ctxDelete=function(){
   hideCtx();if(!ctxTarget)return;
   if(ctxTarget.type==='model'){select(ctxTarget.obj);delSel()}
   else if(ctxTarget.type==='anim'){savedAnimations.splice(ctxTarget.index,1);updateSavedList();toast('Deleted animation')}
+  else if(ctxTarget.type==='clip'){
+    const md=models[ctxTarget.modelIndex];if(!md)return;
+    const clipIdx=ctxTarget.clipIndex;
+    if(clipIdx>=0&&clipIdx<md.animations.length){
+      const clipName=md.animations[clipIdx].name;
+      md.animations.splice(clipIdx,1);
+      if(md.mixer){md.mixer.stopAllAction();md.mixer.uncacheRoot(md.obj)}
+      buildTree();toast('Deleted clip: '+clipName);
+    }
+  }
+  else if(ctxTarget.type==='clipHeader'){
+    const md=models[ctxTarget.modelIndex];if(!md)return;
+    const count=md.animations.length;
+    md.animations.length=0;
+    if(md.mixer){md.mixer.stopAllAction();md.mixer.uncacheRoot(md.obj)}
+    buildTree();toast('Deleted all '+count+' clips');
+  }
 };
 
 // Tree
@@ -802,14 +821,29 @@ function buildTree(){
       const h=document.createElement('div');h.className='ti';h.style.color='var(--dim)';
       h.innerHTML=`<span class="fold-btn ${isC?'closed':''}">▼</span><span class="ic">🎬</span><span class="nm">${md.animations.length} clips</span>`;
       h.onclick=()=>{collapsedSections.has(ak)?collapsedSections.delete(ak):collapsedSections.add(ak);buildTree()};
+      h.oncontextmenu=e=>{e.stopPropagation();showCtx(e,{type:'clipHeader',modelIndex:mi})};
       tree.appendChild(h);
       if(!isC){const ac=document.createElement('div');ac.className='tc';ac.style.maxHeight=md.animations.length*24+'px';
-        md.animations.forEach(clip=>{
+        md.animations.forEach((clip,ci)=>{
           const ai=document.createElement('div');ai.className='ti';
           ai.innerHTML='<span class="ic">▶</span><span class="nm">'+clip.name+'</span><span class="bg">'+clip.duration.toFixed(1)+'s</span>';
+          // Delete button
+          const delBtn=document.createElement('span');delBtn.textContent='✕';
+          delBtn.style.cssText='font-size:9px;color:var(--red);cursor:pointer;padding:0 3px;opacity:0.5;flex-shrink:0';
+          delBtn.onmouseenter=()=>delBtn.style.opacity='1';
+          delBtn.onmouseleave=()=>delBtn.style.opacity='0.5';
+          delBtn.onclick=e=>{
+            e.stopPropagation();
+            const clipName=md.animations[ci].name;
+            md.animations.splice(ci,1);
+            if(md.mixer){md.mixer.stopAllAction();md.mixer.uncacheRoot(md.obj)}
+            buildTree();toast('Deleted clip: '+clipName);
+          };
+          ai.appendChild(delBtn);
           ai.onclick=()=>{
             loadClipIntoTimeline(md, clip);
           };
+          ai.oncontextmenu=e=>{e.stopPropagation();showCtx(e,{type:'clip',modelIndex:mi,clipIndex:ci})};
           ac.appendChild(ai);
         });tree.appendChild(ac);}
     }
